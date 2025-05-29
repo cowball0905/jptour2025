@@ -12,12 +12,20 @@
   <meta name="description" content="Home | Japan Visit 2024 (CS) | City University of Hong Kong" />
   <meta name="keywords" content="City University of Hong Kong, City University, CityU" />
   <meta name="robots" content="index, follow" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+      <!-- Bootstrap Icons (bi) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Font Awesome (fa) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body
   class="cityu-template-2 cityu-template-2-1 cityu-base-layout cityu-base-style ct-prod ct-bootstrap-5 ct-touch ct-xxl ct-breadcrumb ct-submenu ct-sitemap"
   data-new-gr-c-s-check-loaded="14.1111.0" data-gr-ext-installed="">
   <!-- Header -->
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script><!--This is for the map-->
 
   <header class="cityu-header header-color-default">
     <div class="cityu-header-inner container">
@@ -1527,17 +1535,344 @@
             data-aos-duration="1500"></div>
 
           <h2 id="where-is-Japan">Where is Japan?</h2>
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27832243.07511494!2d115.62106178331487!3d31.62041493815926!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34674e0fd77f192f%3A0xf54275d47c665244!2sJapan!5e0!3m2!1sen!2shk!4v1718336406277!5m2!1sen!2shk"
-            width="100%" height="auto" style="
-                border: 0;
-                height: 40vh;
-                max-width: 1000px;
-                margin-left: auto;
-                margin-right: auto;
-                padding: 0px;
+
+          
+          <div id="map" class="leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom"></div>
+             <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+              integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+              crossorigin=""></script>
+          <style> 
+            #map { height: 500px;width:80%;justify-self: center; }
+            .btn i{
+                border-radius: 1.5em;
+            }
+            .action-menu{
+                box-sizing: border-box;
+            }
+            .action-menu button {
+                border-radius: 50%;
+                width: 2em;
+                height: 2em;
+                border: none;
+                background-color: #6610f2;
+                color: white;
+                font-size: 1.5em;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+                transition: background-color 0.2s ease;
+                cursor: pointer;
+            }
+            .action-menu > button{
+              position: absolute;
+              bottom: 1em;
+              right:2.2em;
+            }
+            .action-menu > .action-menu-btns{
+                position: absolute;
+                bottom:-300px;
+                right:1em;
+                display: grid;
+            }
+            @keyframes displayActionMenu {
+              0%{
+                opacity: 0;
+                bottom: -300px;
+              }
+              50%{
+                opacity: 0;
+                bottom: 20px;
+              }
+              100%{
+                opacity: 1;
+                bottom: 65px;
+              }
+            }
+            @keyframes undisplayActionMenu {
+              0%{
+                opacity: 1;
+                bottom: 65px;
+              }
+              50%{
+                opacity: 0;
+                bottom: 20px;
+              }
+              100%{
+                opacity: 0;
+                bottom: -300px;
+              }
+            }
+            .action-menu.active > .action-menu-btns{
+              animation: displayActionMenu 300ms ease-in-out forwards;
+            }
+            .action-menu > .action-menu-btns{
+              animation: undisplayActionMenu 300ms ease-in-out forwards;
+            }
+            .action-menu.active > button{
+              transform: rotate(45deg);
+            }
+            .action-menu > .action-menu-btns .btn{
                 display: flex;
-              " allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                justify-content: flex-end;
+                align-items: center;
+                cursor: pointer;
+                gap: 0.5em;
+            }
+            .action-menu > .action-menu-btns .btn span{
+              font-size: 0.75em;
+            }
+            .action-menu > .action-menu-btns .btn span{
+                color:white;
+                padding: 5px 10px;
+                background-color: gray;
+                border-radius: 15px;
+                white-space: nowrap;
+            }
+
+            .toggleUni{
+              background-color: rgb(154, 0, 0) !important;
+            }
+            .toggleComp{
+              background-color: rgb(85, 1, 85) !important;
+            }
+            .toggleCul{
+              background-color: rgb(173, 112, 0) !important;
+            }
+
+            .leaflet-popup-content {
+              text-align: center;
+            }
+          </style>
+          <script>
+              var CityUIcon = L.icon({//the icon of those GPS markers
+                  iconUrl: './assets/img/gpsIcon/1248222.png', //icon in the file path
+
+                  iconSize:     [38, 38], // size of the icon
+                  iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+                  popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+              });
+
+              var OsakaUIcon = L.icon({//the icon of those GPS markers
+                  iconUrl: './assets/img/gpsIcon/OsakaU.png', //icon in the file path
+
+                  iconSize:     [140, 140], // size of the icon
+                  iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
+                  popupAnchor:  [70, 0] // point from which the popup should open relative to the iconAnchor
+              });
+
+              var KansaiUIcon = L.icon({//the icon of those GPS markers
+                  iconUrl: './assets/img/gpsIcon/KansaiU.png', //icon in the file path
+
+                  iconSize:     [140, 140], // size of the icon
+                  iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
+                  popupAnchor:  [70, 0] // point from which the popup should open relative to the iconAnchor
+              });
+
+              var KyotoUIcon = L.icon({//the icon of those GPS markers
+                  iconUrl: './assets/img/gpsIcon/KyotoU.png', //icon in the file path
+
+                  iconSize:     [140, 140], // size of the icon
+                  iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
+                  popupAnchor:  [70, 0] // point from which the popup should open relative to the iconAnchor
+              });
+
+              var KanadeviaIcon = L.icon({//the icon of those GPS markers
+                  iconUrl: './assets/img/gpsIcon/Kanadevia.png', //icon in the file path
+
+                  iconSize:     [140, 140], // size of the icon
+                  iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
+                  popupAnchor:  [70, 0] // point from which the popup should open relative to the iconAnchor
+              });
+
+              var ExpoIcon = L.icon({//the icon of those GPS markers
+                  iconUrl: './assets/img/gpsIcon/OsakaExpo.png', //icon in the file path
+
+                  iconSize:     [140, 140], // size of the icon
+                  iconAnchor:   [0, 0], // point of the icon which will correspond to marker's location
+                  popupAnchor:  [70, 0] // point from which the popup should open relative to the iconAnchor
+              });
+                
+              //marker of those attractions
+              var kUni = L.marker([34.7739528, 135.5100389], {icon: KansaiUIcon}).bindPopup("<p>Kansai University Senriyama Campus</p><a href='#' class='button'>View All</a>").openPopup();
+              var oUni = L.marker([34.8220139, 135.5244676], {icon: OsakaUIcon}).bindPopup("<p>University of Osaka</p><a href='#' class='button'>View All</a>").openPopup();
+              var kyUni = L.marker([35.026212, 135.780842], {icon: KyotoUIcon}).bindPopup("<p>Kyoto University Yoshida Campus</p><a href='#' class='button'>View All</a>").openPopup();
+              var kanAI = L.marker([34.634845, 135.456624], {icon: KanadeviaIcon}).bindPopup("<p>Kanadevia A.I/TEC</p><a href='#' class='button'>View All</a>").openPopup();
+              var oExpo = L.marker([34.653232111112565, 135.38297960652858], {icon: ExpoIcon}).bindPopup("<p>Osaka Expo</p><a href='#' class='button'>View All</a>").openPopup();
+              
+              
+              //which attractions are visited on that day
+              var dayOne = L.layerGroup([]); 
+              var dayTwo = L.layerGroup([kUni, oUni]);
+              var dayThree = L.layerGroup([kyUni, kanAI]);
+              var dayFour = L.layerGroup([oExpo]);
+              var dayFive = L.layerGroup([]);
+
+              //the main map
+              var map = L.map('map', {
+                  center: [34.989586, 135.715393], //the location that will be loaded for the map
+                  zoom: 10, //zoom level
+                  layers: [dayOne,dayTwo,dayThree,dayFour,dayFive] //which layers/days will be enabled as default
+              });
+  
+              L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                  maxZoom: 19,
+                  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+              }).addTo(map);
+
+              var overlayMaps = { //layers that will be on the layers selection list
+                  "2nd June 2025 (Day 1)": dayOne,
+                  "3rd June 2025 (Day 2)": dayTwo,
+                  "4th June 2025 (Day 3)": dayThree,
+                  "5th June 2025 (Day 4)": dayFour,
+                  "6th June 2025 (Day 5)": dayFive
+              };
+              var layerControl = L.control.layers(null,overlayMaps).addTo(map); 
+
+              const allMarkers = [
+                { marker: kUni, type: 'university' },
+                { marker: oUni, type: 'university' },
+                { marker: kyUni, type: 'university' },
+                { marker: kanAI, type: 'company' },
+                { marker: oExpo, type: 'culture' }
+              ];
+
+              function showOnlyType(type) {
+                clearAllMarkers();
+                allMarkers.forEach(obj => {
+                  if (obj.type === type) {
+                    obj.marker.addTo(map);
+                  }
+                });
+              }
+
+              function showAllMarkers() {
+                allMarkers.forEach(obj => {
+                  obj.marker.addTo(map);
+                });
+              }
+
+              function clearAllMarkers() {
+                allMarkers.forEach(obj => {
+                  map.removeLayer(obj.marker);
+                });
+              }
+
+              // Create bottom-right button control
+              const categoryControl = L.control({ position: 'bottomright' });
+
+              categoryControl.onAdd = function () {
+                const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control category-buttons');
+                div.innerHTML = `
+                      <div class="action-menu">
+                          <button onclick="togglePlus()"><i class='fa fa-plus'></i></button>
+                          <div class="action-menu-btns">
+                              <div class="btn">
+                                  <span>Universities</span>
+                                  <button onclick="toggleUni()" id="btn-univ" style='background-color: red;'><i class="bi bi-mortarboard"></i></button>
+                              </div>
+                              <div class="btn">
+                                  <span>Company</span>
+                                  <button onclick="toggleComp()" id="btn-comp" style='background-color: purple;'><i class="bi bi-building"></i></button>
+                              </div>
+                              <div class="btn">
+                                  <span>Culture</span>
+                                  <button onclick="toggleCul()" id="btn-culture" style='background-color: orange;'><i class="bi bi-yin-yang"></i></button>
+                              </div>
+                              <div class="btn">
+                                  <span>Technology</span>
+                                  <button onclick="toggleTech()" id="btn-tech" style='background-color: lime;'><i class="bi bi-postage"></i></button>
+                              </div>
+                          </div>
+                      </div>
+                `;
+                L.DomEvent.disableClickPropagation(div);
+                return div;
+              };
+
+              categoryControl.addTo(map);
+
+              let plus = document.querySelector(".action-menu > button");
+
+              function togglePlus(){
+                document.querySelector(".action-menu").classList.toggle("active");
+              }
+
+              let uni = document.querySelector("#btn-univ");
+              let comp = document.querySelector("#btn-comp");
+              let cul = document.querySelector("#btn-culture");
+              let tech = document.querySelector("#btn-tech");
+
+              function toggleUni() {
+
+                if(comp.classList.contains("toggleComp")){
+                  comp.classList.toggle("toggleComp");
+                }else if(cul.classList.contains("toggleCul")){
+                  cul.classList.toggle("toggleCul");
+                }else if(tech.classList.contains("toggleTech")){
+                  tech.classList.toggle("toggleTech")
+                }
+
+                uni.classList.toggle("toggleUni");
+                if(uni.classList.contains("toggleUni")){
+                  showOnlyType('university');
+                }else{
+                  showAllMarkers();
+                }
+                
+              }
+
+              function toggleComp() {
+                if(uni.classList.contains("toggleUni")){
+                  uni.classList.toggle("toggleUni");
+                }else if(cul.classList.contains("toggleCul")){
+                  cul.classList.toggle("toggleCul");
+                }else if(tech.classList.contains("toggleTech")){
+                  tech.classList.toggle("toggleTech")
+                }
+
+                comp.classList.toggle("toggleComp");
+                if(comp.classList.contains("toggleComp")){
+                  showOnlyType('company');
+                }else{
+                  showAllMarkers();
+                }
+              }
+
+              function toggleCul() {
+                if(uni.classList.contains("toggleUni")){
+                  uni.classList.toggle("toggleUni");
+                }else if(comp.classList.contains("toggleComp")){
+                  comp.classList.toggle("toggleComp");
+                }else if(tech.classList.contains("toggleTech")){
+                  tech.classList.toggle("toggleTech");
+                }
+
+
+                cul.classList.toggle("toggleCul");
+                if(cul.classList.contains("toggleCul")){
+                  showOnlyType('culture');
+                }else{
+                  showAllMarkers();
+                }
+              }
+
+
+              function toggleTech() {
+                if(uni.classList.contains("toggleUni")){
+                  uni.classList.toggle("toggleUni");
+                }else if(comp.classList.contains("toggleComp")){
+                  comp.classList.toggle("toggleComp");
+                }else if(cul.classList.contains("toggleCul")){
+                  cul.classList.toggle("toggleCul");
+                }
+
+
+                tech.classList.toggle("toggleTech");
+                if(tech.classList.contains("toggleTech")){
+                  showOnlyType('tech');
+                }else{
+                  showAllMarkers();
+                }
+              }
+          </script>
         </div>
 
         <div class="home" style="margin-bottom: 2rem">
@@ -1819,5 +2154,4 @@
     <i class="fas fa-chevron-up"></i>
   </button>
 </body>
-
 </html>
