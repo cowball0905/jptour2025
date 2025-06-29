@@ -67,7 +67,7 @@ def process_images_recursively(root_path):
 # Usage
 if __name__ == "__main__":
     # Replace with your actual path
-    image_directory = "./assets/img/contents"
+    image_directory = "./assets/img/Prepare"
     
     # Confirm before processing
     print(f"This will process all WebP images in: {image_directory}")
