@@ -1232,10 +1232,73 @@
               height: 721px;
               overflow: hidden;
             }
+                .scrolling-wrapper a{
+                  text-decoration: none !important;
+                  color: black !important;
+                }
+                .post {
+                  background-color: #fff;
+                  border: 1px solid #ddd;
+                  border-radius: 8px;
+                  margin: 20px 0;
+                  padding: 15px;
+                  width: 500px;
+                }
+                .row{
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin-bottom: 10px;
+                }
+                .profile {
+                  display: flex;
+                  align-items: center;
+                  margin-bottom: 10px;
+                }
+                .profile img {
+                  width: 40px;
+                  height: 40px;
+                  border-radius: 50%;
+                  margin-right: 10px;
+                }
+                .profile-info h3 {
+                  margin: 0;
+                  font-size: 14px;
+                }
+                .profile-info p {
+                  margin: 0;
+                  color: #606770;
+                  font-size: 12px;
+                }
+                .post-content {
+                  margin-bottom: 10px;
+                }
+                .photo-grid {
+                  display: grid;
+                  grid-template-columns: repeat(2, 1fr);
+                  gap: 10px;
+                }
+                .photo-grid img {
+                  width: 100%;
+                  height: auto;
+                  border-radius: 4px;
+                }
+                .reactions {
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 10px 0;
+                  border-top: 1px solid #ddd;
+                  font-size: 12px;
+                  color: #606770;
+                }
+                .post-img{
+                  width: 100%
+                }
           </style>
           <h2 id="us-on-facebook">Us on Facebook</h2>
           <div class="scrolling-wrapper">
-            <!-- First Post (shorter content – adjusted height) -->
+            <!--
+            First Post (shorter content – adjusted height)
             <iframe
               src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FCityU.CSDept%2Fposts%2Fpfbid0AGtqGXuYZjh49wE6x42kcNJwLrGvnoHDtaTyGS1iHTwWSCnTEUWupUFjNTeJYmASl&show_text=true&width=500"
               width="500" height="450" class="fb-frame" style="
@@ -1249,7 +1312,7 @@
               allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
             </iframe>
 
-            <!-- Second Post -->
+            Second Post
             <iframe
               src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FCityU.CS%2Fposts%2Fpfbid0HszdrLvN6KWfV7ivheiuHFMhU1rt6A9kPZQVm4SNFPn9xpef8v6k9uKwvgvtLUDql&show_text=true&width=500"
               width="500" height="721" class="fb-frame" style="
@@ -1263,7 +1326,7 @@
               allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
             </iframe>
 
-            <!-- Third Post -->
+            Third Post
             <iframe
               src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FCityU.CS%2Fposts%2Fpfbid02jjEEesk5drwAKk6tzHSRMxqmEbXha7SQtE3o6zZEXeFnwMk4bTbLD8wHHUgEmt31l&show_text=true&width=500"
               width="500" height="721" class="fb-frame" style="
@@ -1276,6 +1339,88 @@
               " scrolling="no" frameborder="0" allowfullscreen="true"
               allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
             </iframe>
+            -->
+            <a href ='https://www.facebook.com/share/p/1UwZn6baPH/'>
+            <div class="post">
+              <div class="profile">
+                <img src="./assets/img/fb-post/icon.webp" alt="Profile Picture">
+                <div class="profile-info">
+                  <h3>CityU CS</h3>
+                  <p>12/6</p>
+                </div>
+              </div>
+              <div class="post-content">
+                This is day 1 (Jun 2) of our CityUHK CS Study 
+                Tour 2025 to Osaka, Japan! Students are very delighted 
+                to be able to join this trip full of different cultural 
+                and technological aspects and they are looking forward 
+                to exploring this amazing country in the next few days 😁
+              </div>
+                <img src="./assets/img/fb-post/fb-1/1.webp" class="post-img"/>
+            </div>
+            </a>
+
+            <a href ='https://www.facebook.com/share/p/1A3pFLY6kc/'>
+            <div class="post">
+              <div class="profile">
+                <img src="./assets/img/fb-post/icon.webp" alt="Profile Picture">
+                <div class="profile-info">
+                  <h3>CityU CS</h3>
+                  <p>13/6</p>
+                </div>
+              </div>
+              <div class="post-content">
+                This is day 2 (Jun 3) of our CityUHK CS Study Tour 2025. 
+                Our group went to Kansai University (KU) where we first had 
+                a campus tour guided by KU students. Moreover, our students 
+                experienced a lesson with creative gadgets and had some memorable 
+                moments. In the afternoon, our group went to the University of 
+                Osaka and learnt about the research on various robot mechanisms from Prof. Kenjiro Tadakuma.
+              </div>
+              <div class="photo-grid">
+                <img src="./assets/img/fb-post/fb-2/1.webp"/>
+                <img src="./assets/img/fb-post/fb-2/2.webp"/>
+                <img src="./assets/img/fb-post/fb-2/3.webp"/>
+                <img src="./assets/img/fb-post/fb-2/4.webp"/>
+              </div>
+            </div>
+            </a>
+
+            <a href ='https://www.facebook.com/share/p/175ysp694H/'>
+            <div class="post">
+              <div class="profile">
+                <img src="./assets/img/fb-post/icon.webp" alt="Profile Picture">
+                <div class="profile-info">
+                  <h3>CityU CS</h3>
+                  <p>14/6</p>
+                </div>
+              </div>
+              <div class="post-content">
+                This is day 3 (Jun 4) of our CityUHK CS Study Tour 2025. 
+                In the morning, we visited Kanadevia Advanced Information 
+                Technology Center, a company developing tech solutions for 
+                people and the planet. The center focuses on remote monitoring 
+                and support for system operations, as well as developing new 
+                innovations using IoT and big data. Students attended a talk to learn 
+                about the related technologies followed by a tour guided by a robot.  
+                In the afternoon, students got a valuable chance to see the 
+                research led by professors and PhD students in Kyoto University. 
+                Projects ranged from generating 3D models with multi-view cameras, 
+                AI-driven ping pong tactics to autonomous robotic movement. It was a 
+                great opportunity to explore and understand the research shaping the 
+                future of computer vision and automation.
+              </div>
+              <div class="photo-grid">
+                <img src="./assets/img/fb-post/fb-3/1.webp"/>
+                <img src="./assets/img/fb-post/fb-3/2.webp"/>
+                <img src="./assets/img/fb-post/fb-3/3.webp"/>
+                <img src="./assets/img/fb-post/fb-3/4.webp"/>
+              </div>
+            </div>
+            </a>
+
+
+
               <div id="fb-fallback" style="display: none; text-align: center; padding: 1rem; border: 1px solid #ccc; border-radius: 8px;">
               <p>Facebook content could not be loaded. Please check your device</p></div>
           </div>
